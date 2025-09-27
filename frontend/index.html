@@ -1,3 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <!-- build a css-->
+  <link rel="stylesheet" href="build.css">
+  <!-- Boostrap icon for free -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+
+</head>
+<body>
+
+  <video id="bg-video" autoplay muted loop>
+    <source src="over.webm" type="video/webm">
+    เบราว์เซอร์ของคุณไม่รองรับวิดีโอ
+  </video>
+
+  <div id="navbar">
+    <div class="item left">
+      <a id="backpack"><i class="bi bi-backpack3 active" id="icon-outline"></i><i class="bi bi-backpack3-fill" id="icon-fill"></i></a>
+      
+    </div>
+    
+    <div class="logo">
+      <a href="index.html"><img src="logoover.png"></a>
+    </div>
+
+    <div class="item right">
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
+      <a href="#news">News</a>
+      <a href="#contact">Contact</a>
+    </div>
+  
+</div>
+<script src="build.js"></script>
+</body>
+</html>
+
+<!--
 <!doctype html>
 <html lang="th">
 <head>
@@ -84,7 +130,7 @@
     <h1>🔍 หน้าเว็บสแกนชื่อ</h1>
   </header>
 
-  <!-- หน้าแรก -->
+  
   <div id="page1" class="page active">
     <div class="box">
       <div class="fake-camera">[ กรอบสแกน ]</div>
@@ -105,11 +151,11 @@
         <tbody id="nameTable"></tbody>
       </table>
       <br>
-      <button class="btn" onclick="goToAdd()">➕ เพิ่มรายชื่อ</button>
+      <button class="btn" onclick="goToAdd">➕ เพิ่มรายชื่อ</button>
     </div>
   </div>
 
-  <!-- หน้าที่สอง -->
+  
   <div id="page2" class="page">
     <div class="box">
       <h2 id="formTitle">✏️ เพิ่มหรือแก้ไขรายชื่อ</h2>
@@ -121,88 +167,8 @@
     </div>
   </div>
 
-  <script>
-    const result = document.getElementById('result');
-    const nameInput = document.getElementById('nameInput');
-    const nameTable = document.getElementById('nameTable');
-    const formTitle = document.getElementById('formTitle');
-    let count = 0;
-    let editRow = null; // แถวที่กำลังแก้ไข
 
-    function scan() {
-      result.textContent = '✅ สแกนเสร็จสิ้น ';
-    }
-
-    // ไปหน้าเพิ่มชื่อ
-    function goToAdd() {
-      formTitle.textContent = "➕ เพิ่มรายชื่อ";
-      nameInput.value = "";
-      editRow = null;
-      goToPage(2);
-    }
-
-    // ไปหน้าแก้ไข
-    function goToEdit(row) {
-      formTitle.textContent = "✏️ แก้ไขรายชื่อ";
-      nameInput.value = row.cells[1].textContent;
-      editRow = row;
-      goToPage(2);
-    }
-
-    // ฟังก์ชันบันทึกชื่อ
-    function saveName() {
-      const name = nameInput.value.trim();
-      if (name === "") {
-        alert("กรุณากรอกชื่อก่อนบันทึก");
-        return;
-      }
-
-      if (editRow) {
-        // แก้ไขชื่อเดิม
-        editRow.cells[1].textContent = name;
-      } else {
-        // เพิ่มชื่อใหม่
-        count++;
-        const row = document.createElement('tr');
-        const cellNo = document.createElement('td');
-        const cellName = document.createElement('td');
-        const cellActions = document.createElement('td');
-
-        cellNo.textContent = count;
-        cellName.textContent = name;
-
-        // ปุ่มแก้ไข
-        const editBtn = document.createElement('button');
-        editBtn.textContent = "✏️ แก้ไข";
-        editBtn.className = "btn";
-        editBtn.onclick = () => goToEdit(row);
-
-        // ปุ่มลบ
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = "❌ ลบ";
-        deleteBtn.className = "btn";
-        deleteBtn.onclick = () => row.remove();
-
-        cellActions.appendChild(editBtn);
-        cellActions.appendChild(deleteBtn);
-
-        row.appendChild(cellNo);
-        row.appendChild(cellName);
-        row.appendChild(cellActions);
-
-        nameTable.appendChild(row);
-      }
-
-      nameInput.value = "";
-      goToPage(1); // กลับหน้าหลักหลังบันทึก
-    }
-
-    // ฟังก์ชันสลับหน้า
-    function goToPage(page) {
-      document.getElementById('page1').classList.remove('active');
-      document.getElementById('page2').classList.remove('active');
-      document.getElementById('page' + page).classList.add('active');
-    }
-  </script>
 </body>
 </html>
+
+-->
