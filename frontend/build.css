@@ -429,3 +429,79 @@ input:checked + .slider:before {
 .table-head p {
   font-weight: bold;  
 }
+
+
+/* popup */
+/* พื้นหลังมืด */
+.popup {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  color: white;
+}
+
+/* กล่อง popup */
+.popup-content {
+  background: #000000;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  animation: popUp 0.3s ease;
+}
+
+#popup-edit-time .popup-content form{ 
+  display: flex;
+  flex-direction: column;
+}
+
+
+#popup-edit-std .popup-content form {
+  display: flex;
+  flex-direction: row;   /* โลโก้ซ้าย + input ขวา */
+  align-items: flex-start; /* ให้ input ชิดบนกับโลโก้ */
+  gap: 20px;             /* เว้นระยะห่าง */
+}
+
+.popup-user-img {
+  display: flex;
+  justify-content: center;  /* จัดกึ่งกลาง */
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.popup-user-img img {
+  width: 80px;        /* ปรับขนาดกว้าง */
+  height: 80px;       /* ปรับขนาดสูง */
+  object-fit: cover;  /* ครอบรูปให้พอดี */
+  border-radius: 50%; /* ทำให้เป็นวงกลม */
+  border: 2px solid #ff990000; /* เพิ่มเส้นขอบให้ดูเด่น */
+}
+
+#popup-add-std .popup-content form .popup-edit{ 
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-edit-btt{
+  display: flex;
+  justify-content: space-around;
+
+}
+/* ปุ่มปิด */
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* effect เด้ง */
+@keyframes popUp {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

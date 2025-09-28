@@ -50,3 +50,39 @@ buttons.forEach((btn, index) => {
     }
   });
 });
+
+
+
+/*popup*/
+/*popup save as student*/
+function open_save_as_std() {
+  document.getElementById("popup-edit-std").style.display = "flex";
+}
+function close_save_as_std() {
+  document.getElementById("popup-edit-std").style.display = "none";
+}
+
+/*popup save as check in check out*/
+function open_save_as_time() {
+  document.getElementById("popup-edit-time").style.display = "flex";
+}
+
+function close_save_as_time() {
+  document.getElementById("popup-edit-time").style.display = "none";
+}
+/*popup add student */
+function open_add_std() {
+  document.getElementById("popup-add-std").style.display = "flex";
+}
+
+function close_add_std() {
+  document.getElementById("popup-add-std").style.display = "none";
+}
+/*popup add check in check out */
+function open_add_time() {
+  document.getElementById("popup-add-time").style.display = "flex";
+}
+
+function close_add_time() {
+  document.getElementById("popup-add-time").style.display = "none";
+}
