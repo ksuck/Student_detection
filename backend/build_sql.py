@@ -86,16 +86,8 @@ def show_data_students(path):
 
     conn.close()
 
-    # แสดงชื่อ column
-    print("Data in 'students':")
-    print(" | ".join(col_names))
-    print("-" * 50)
-
-    # แสดงข้อมูลทีละแถว
-    for row in rows:
-        print(" | ".join(str(r) for r in row))
-
-    return rows
+    # return เป็น list ของ dict
+    return [dict(zip(col_names, row)) for row in rows]
 
 #ดูรายการ walk-in
 def show_data_attendance(path):
@@ -104,17 +96,14 @@ def show_data_attendance(path):
 
     cursor.execute("SELECT * FROM attendance;")
     rows = cursor.fetchall()
-    col_names = [description[0] for description in cursor.description]
+    col_names = [description[0] for description in cursor.description]  # ได้ชื่อคอลัมน์
 
     conn.close()
 
-    print("📋 Data in 'attendance':")
-    print(" | ".join(col_names))
-    print("-" * 70)
-    for row in rows:
-        print(" | ".join(str(r) for r in row))
+    # แปลงข้อมูลเป็น list ของ dict
+    result = [dict(zip(col_names, row)) for row in rows]
 
-    return rows
+    return result
 
 #update ข้อมูลนักเรียน
 def update_student(student_id, new_name, path):
@@ -145,7 +134,6 @@ def update_attendance(student_id, attendance_date, new_checkin, new_checkout, pa
 
     conn.commit()
     conn.close()
-    print(f"แก้ไขข้อมูล student_id={student_id}, date={attendance_date} เรียบร้อย ✅")
 
 #ลบข้อมูลนักเรียน
 def delete_student(student_id, path):
@@ -168,9 +156,12 @@ def delete_attendance(attendance_id, path):
     conn.close()
     print(f"ลบข้อมูล attendance_id={attendance_id} เรียบร้อย ✅")
 
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "student_attendance.db")
 if __name__ == "__main__":
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    DB_PATH = os.path.join(BASE_DIR, "student_attendance.db")
+    
 
 
 
@@ -198,6 +189,7 @@ if __name__ == "__main__":
     '''
     
     #ข้อมูลนักเรียน
+    #add_student(66545202000,"ฟหกด เาสว",DB_PATH)
     show_data_students(DB_PATH)
     '''
     ดูฐานข้อมูลนักเรียน

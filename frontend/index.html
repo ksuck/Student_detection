@@ -100,42 +100,15 @@
               <div class="table-row table-head">
                 <p>attendance_id</p><p>student_id</p> <p>attendance_date</p><p>checkin_time</p><p>checkout_time</p><p>-</p>
               </div>
-              <div class="table-row">
+              <div id="attendance">
+                <div class="table-row">
                 <p>1</p><p>66545202010</p> <p>04/02/2546</p><p>08:03:45</p><p>-</p><p>
                   <button onclick="open_save_as_time()"><span class="material-symbols-outlined">save_as</span></button>
                   <button><span class="material-symbols-outlined">delete</span></button>
                 </p>
               </div> 
-              <div class="table-row">
-                <p>1</p><p>66545202010</p> <p>04/02/2546</p><p>08:03:45</p><p>-</p><p>
-                  <button onclick="open_save_as_time()"><span class="material-symbols-outlined">save_as</span></button>
-                  <button><span class="material-symbols-outlined">delete</span></button>
-                </p>
-              </div> 
-              <div class="table-row">
-                <p>1</p><p>66545202010</p> <p>04/02/2546</p><p>08:03:45</p><p>-</p><p>
-                  <button onclick="open_save_as_time()"><span class="material-symbols-outlined">save_as</span></button>
-                  <button><span class="material-symbols-outlined">delete</span></button>
-                </p>
-              </div> 
-              <div class="table-row">
-                <p>1</p><p>66545202010</p> <p>04/02/2546</p><p>08:03:45</p><p>-</p><p>
-                  <button onclick="open_save_as_time()"><span class="material-symbols-outlined">save_as</span></button>
-                  <button><span class="material-symbols-outlined">delete</span></button>
-                </p>
-              </div> 
-              <div class="table-row">
-                <p>1</p><p>66545202010</p> <p>04/02/2546</p><p>08:03:45</p><p>-</p><p>
-                  <button onclick="open_save_as_time()"><span class="material-symbols-outlined">save_as</span></button>
-                  <button><span class="material-symbols-outlined">delete</span></button>
-                </p>
-              </div> 
-              <div class="table-row">
-                <p>1</p><p>66545202010</p> <p>04/02/2546</p><p>08:03:45</p><p>-</p><p> 
-                  <button onclick="open_save_as_time()"><span class="material-symbols-outlined">save_as</span></button>
-                  <button><span class="material-symbols-outlined">delete</span></button>
-                </p>
-              </div> 
+              </div>
+  
           </div>
         </div>
         <div class="page1-title">
@@ -145,47 +118,23 @@
           <input type="text" placeholder="Search.."><button><span class="material-symbols-outlined">search</span></button>
         </div>
 
-        <div class="build-table-overflow">
+        <div  class="build-table-overflow">
             <div class="table-col">
               <div class="table-row table-head">
                 <p>student_id</p><p>full name</p> <p> - </p>
               </div>
-              <div class="table-row">
-                <p>66545202010</p> <p>ชุติพงศ์ ชูเลิศ</p>
+              <div id="student-container">
+                <div id="student-rows" class="table-row">
+                <p>660หก10</p> <p>ชุติพงศ์ ชูฟหกฟหกเลิศ</p>
                 <p>
                   <button><span class="material-symbols-outlined">search</span></button>
                   <button  onclick="open_save_as_std()"><span class="material-symbols-outlined">save_as</span></button>
                   <button><span class="material-symbols-outlined">delete</span></button>
                 </p>
               </div> 
-              <div class="table-row">
-                <p>66545202010</p> <p>ชุติพงศ์ ชูเลิศ</p><p>
-                  <button><span class="material-symbols-outlined">search</span></button>
-                  <button onclick="open_save_as_std()"><span class="material-symbols-outlined">save_as</span></button>
-                  <button><span class="material-symbols-outlined">delete</span></button>
-                </p>
-              </div> 
-              <div class="table-row">
-                <p>66545202010</p> <p>ชุติพงศ์ ชูเลิศ</p><p>
-                  <button><span class="material-symbols-outlined">search</span></button>
-                  <button onclick="open_save_as_std()" ><span class="material-symbols-outlined">save_as</span></button>
-                  <button><span class="material-symbols-outlined">delete</span></button>
-                </p>
-              </div> 
-              <div class="table-row">
-                <p>66545202010</p> <p>ชุติพงศ์ ชูเลิศ</p><p>
-                  <button><span class="material-symbols-outlined">search</span></button>
-                  <button onclick="open_save_as_std()"><span class="material-symbols-outlined">save_as</span></button>
-                  <button><span class="material-symbols-outlined">delete</span></button>
-                </p>
-              </div> 
-              <div class="table-row">
-                <p>66545202010</p> <p>ชุติพงศ์ ชูเลิศ</p><p>
-                  <button><span class="material-symbols-outlined">search</span></button>
-                  <button onclick="open_save_as_std()"><span class="material-symbols-outlined">save_as</span></button>
-                  <button><span class="material-symbols-outlined">delete</span></button>
-                </p>
-              </div> 
+              </div>
+              
+            
           </div>
         </div>
       </div>
@@ -204,16 +153,16 @@
         </div>
         <div class="popup-edit">
             <label>รหัสนักศึกษา:</label>
-            <input type="text" value="66545202010"><br><br>
+            <input type="text" id="popup-student-id" value="66545202010"><br><br>
 
             <label>ชื่อ-สกุล:</label>
-            <input type="text" value="ชุติพงศ์ ชูเลิศ"><br><br>
+            <input type="text" id="popup-student-name"  value="ชุติพงศ์ ชูเลิศ"><br><br>
         </div>
         
     </form>
     <div class="popup-edit-btt">
-      <button type="submit">บันทึก</button>
-      <button type="button" onclick="close_save_as_time()">Close</button>
+      <button type="button" onclick="saveStudent()">บันทึก</button>
+      <button type="button" onclick="close_save_as_std()">Close</button>
     </div>
       
   </div>
@@ -226,18 +175,18 @@
     <h3>แก้ไขข้อมูล แก๊ง</h3>
     <form>
       <label>รหัสนักศึกษา:</label>
-      <input type="text" value="66545202010"><br><br>
+      <input id="popup-student-id-time" type="text" value="66545202010"><br><br>
     
       <label>วันที่:</label>
-      <input type="text" value="88522"><br><br>
+      <input id="popup-attendance-date"  type="text" value="88522"><br><br>
 
       <label>เวลาเข้า:</label>
-      <input type="text" value="8854"><br><br>
+      <input id="popup-checkin"  type="text" value="8854"><br><br>
 
       <label>เวลาออก:</label>
-      <input type="text" value=" "><br><br>
+      <input id="popup-checkout"  type="text" value=" "><br><br>
     
-      <button type="submit">บันทึก</button>
+      <button type="button" onclick="saveAttendance()">บันทึก</button>
       <button type="button" onclick="close_save_as_time()">Close</button>
     </form>
   </div>
@@ -248,14 +197,14 @@
   <div class="popup-content">
     <span class="close" onclick="close_add_std()">&times;</span>
     <h3>แก้ไขข้อมูล</h3>
-    <form>
+    <form >
       <label>รหัสนักศึกษา:</label>
       <input type="text" value="66545202010"><br><br>
     
       <label>ชื่อ-สกุล:</label>
       <input type="text" value="ชุติพงศ์ ชูเลิศ"><br><br>
     
-      <button type="submit">บันทึก</button>
+      <button type="button"  >บันทึก</button>
       <button type="button" onclick="close_add_std()">Close</button>
     </form>
   </div>  
