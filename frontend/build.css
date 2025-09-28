@@ -1,3 +1,7 @@
+body {
+    font-family: 'Kanit', sans-serif;
+  }
+
 
 /* BG VIDEO */
 #bg-video {
@@ -17,13 +21,17 @@
 #navbar {
     display: flex;
     
-    top: 0;
+    top:0;
     overflow: hidden;
-    background-color: #33333300;
+    margin-top: 1rem;
+    background-color: #99090900;
     padding: 0px;
     flex-direction: row-reverse;   /* เริ่มเรียงจากขวา → ซ้าย */
     justify-content: space-between; /* กระจายซ้าย-กลาง-ขวา */
-    
+    position: sticky;
+    height: 120px;         /* ← เพิ่มความสูง */
+    align-items: center;   /* จัดกลางแนวตั้ง */
+    z-index: 100;          /* กันโดนวิดีโอทับ */
     
 
 
@@ -31,7 +39,7 @@
 
 #navbar .logo{
     color: aliceblue;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.192);
     text-align: center;
     height: 100px;
     width: 100px;
@@ -40,7 +48,10 @@
     margin-top: 0.3rem;
     position: absolute;
     left: 50%;    
+    top: -0.5%;
     transform: translateX(-50%);
+    top: 10px;
+    
 }
 #navbar .logo img{
     height: 100px;
@@ -51,17 +62,17 @@
 
 
 @keyframes shake {
-  0%   { transform: translate(1px, 1px) rotate(0deg); }
-  10%  { transform: translate(-1px, -2px) rotate(-1deg); }
-  20%  { transform: translate(-3px, 0px) rotate(1deg); }
-  30%  { transform: translate(3px, 2px) rotate(0deg); }
-  40%  { transform: translate(1px, -1px) rotate(1deg); }
-  50%  { transform: translate(-1px, 2px) rotate(-1deg); }
-  60%  { transform: translate(-3px, 1px) rotate(0deg); }
-  70%  { transform: translate(3px, 1px) rotate(-1deg); }
-  80%  { transform: translate(-1px, -1px) rotate(1deg); }
-  90%  { transform: translate(1px, 2px) rotate(0deg); }
-  100% { transform: translate(1px, -2px) rotate(-1deg); }
+   0%  { transform: translate(3px, 3px) rotate(0deg); }
+  10%  { transform: translate(-3px, -4px) rotate(-5deg); }
+  20%  { transform: translate(-5px, 0px) rotate(5deg); }
+  30%  { transform: translate(5px, 4px) rotate(0deg); } 
+  40%  { transform: translate(3px, -3px) rotate(5deg); }
+  50%  { transform: translate(-3px, 4px) rotate(-5deg); }
+  60%  { transform: translate(-5px, 2px) rotate(0deg); }
+  70%  { transform: translate(5px, 2px) rotate(-5deg); }
+  80%  { transform: translate(-3px, -3px) rotate(5deg); }
+  90%  { transform: translate(3px, 4px) rotate(0deg); }
+  100% { transform: translate(3px, -4px) rotate(-5deg); }
 }
 
 
@@ -108,7 +119,7 @@ a{
 
 a:hover{
   transform: scale(1.3) rotate(10deg); /* ขยาย + หมุนเล็กน้อย */
-  color: #ff9800; /* เปลี่ยนสีตอน hover */
+  color: #ff3502; /* เปลี่ยนสีตอน hover */
 }
 
 
@@ -192,4 +203,229 @@ input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
+}
+
+
+/*                    */
+.container-inventory{
+    margin-top: 0%;
+    display: none;
+    justify-self: center;
+    flex-direction: column;
+
+    color: white;
+
+    width: 50%;
+    height: auto;
+}
+
+
+.container-inventory.active {
+  display: flex; /* โชว์เมื่อ active */
+  animation: fadeInUp 0.5s ease forwards;
+ 
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container-inventory .menu{
+    display: flex;
+    justify-content: space-between;
+  
+}
+
+.container-inventory .menu .inventory-logo {
+    display: flex;
+    align-items: center;
+    background-color: #ff9800;
+
+    border-top-left-radius: 2em;
+    border-top-right-radius: 0;
+    font-size: 1vw; /* ขนาดตัวอักษรย่อ/ขยายตามจอ */
+
+    padding-left: 5%; 
+    padding-right: 5%;
+   
+}
+
+
+
+.container-inventory .menu .inventory-btt a i {
+    font-size: 1vw;            /* ขนาดอักษรตามความกว้างจอ */
+    background-color: black; 
+    border-radius: 50%;
+    padding: 0.8em;            /* padding อิงตาม font-size */
+    display: inline-flex;      /* จัดกลางง่าย */
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+
+.container-inventory .menu .inventory-btt a .active{
+    background-color: #ff9800;
+    border-radius: 50% 50% 0 0; /* ด้านบนโค้ง ด้านล่างตัด */
+    transform: scale(1.05);     /* ขยายเฉพาะ active */
+	
+
+    
+}
+
+/* หน้า1 + 2 */
+.container-inventory .inventory-page1, 
+.container-inventory .inventory-page2
+{
+    background-color: black; 
+    width: 100%;
+    min-height: 70vh; 
+    height: auto;  
+    padding-top: 1%;
+    text-align: center;
+    
+
+}
+
+/* หน้าแรก*/
+.container-inventory .page1-title{
+    border-bottom: white solid 1px;
+    
+    
+}
+
+
+.page1-body{
+    padding-top: 10px;
+}
+
+#camera {
+  width: 100%;           /* ยืดเต็ม container */
+  max-width: 320px;      /* ไม่เกิน 640px */
+  aspect-ratio: 4 / 3;
+  background: #000;       /* กรอบกล้องตอนยังไม่เปิด */
+  border: 2px solid #555;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;        /* จัดให้อยู่กึ่งกลาง container */
+  transform: scaleX(-1);  /* พลิกกลับด้าน */
+}
+
+
+/* body systemlog */
+.page1-body .system-log-display{
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column-reverse;   
+    padding: 1%;
+
+    height: 27vh;
+    overflow-y: auto;
+    
+
+    
+}
+.page1-body .system-log-info, .page1-body .system-log-warnig,
+.page1-body .system-log-suscess{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 1%;
+    font-size: 16px;
+    
+}
+
+
+.page1-body .system-log-display b{
+    border-radius: 1rem;
+    padding: 1%;
+    
+    flex-shrink: 0;   
+    white-space: nowrap;
+}
+
+.page1-body .system-log-display p{
+    margin: 0;  
+    flex: 1;  
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+    text-align: right;
+}
+
+.page1-body .system-log-display .system-log-info b{
+    background: gray;
+   
+}
+
+.page1-body .system-log-display .system-log-warnig b{
+    background: rgb(255, 174, 0);
+    
+}
+
+.page1-body .system-log-display .system-log-suscess b{
+    background: green;
+    
+}
+
+/* หน้าสอง */
+
+/*class="search-bar" */
+.search-bar{
+    display: flex;
+    flex-direction: row;
+    justify-self: end;
+}
+
+.build-table-overflow {
+    display: flex;
+    max-height: 20vh;        /* จำกัดความสูงเพื่อให้ scroll */
+    overflow-y: auto;
+    overflow-x: auto;/* ถ้าคอลัมน์ยาวเกินก็เลื่อนแนวนอนได้ */
+    margin: 0;
+    width: 100%;
+
+
+}
+
+.table-col {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.table-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.table-row p {
+  flex: 1 1 0;              /* ช่องแต่ละอันแบ่งพื้นที่เท่ากัน */
+  min-width: 0; 
+  white-space: nowrap; 
+  text-align: center;   /* จัดข้อความกลาง */
+  padding: 1px 1px;         /* เพิ่ม padding ให้อ่านง่าย */
+  border: 1px solid #dee2e6; /* เส้นตาราง */
+  box-sizing: border-box; /* ป้องกัน padding ดันเกิน */
+  margin: 0;
+  overflow-x: auto;
+}
+
+.table-head {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: rgb(255, 174, 0);
+}
+
+.table-head p {
+  font-weight: bold;  
 }
