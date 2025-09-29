@@ -10,7 +10,7 @@ import os
 
 from backend import build_sql
 
-#python -m uvicorn backend.build_api:app --reload --host 0.0.0.0 --port 8000
+#run python -m uvicorn backend.build_api:app --reload --host 0.0.0.0 --port 8000
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="frontend"), name="static")

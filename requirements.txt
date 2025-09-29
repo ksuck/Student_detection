@@ -7,3 +7,11 @@ streamlit
 python-dotenv
 streamlit-autorefresh
 sqlmodel
+python-multipart==0.0.6 # รองรับการอัปโหลดไฟล์ (UploadFile, FormData)
+pydantic==1.10.7        # ใช้ตรวจสอบและ validate ข้อมูล
+numpy==1.23.5           # ประมวลผล array และใช้กับ OpenCV
+opencv-contrib-python==4.5.5.64  # OpenCV + โมดูล face recognition (LBPHFaceRecognizer)
+opencv-python==4.5.5.64          # OpenCV สำหรับประมวลผลภาพ
+
+
+#run-api: python -m uvicorn backend.build_api:app --reload --host 0.0.0.0 --port 8000
