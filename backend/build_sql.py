@@ -157,6 +157,45 @@ def delete_attendance(attendance_id, path):
     print(f"ลบข้อมูล attendance_id={attendance_id} เรียบร้อย ✅")
 
 
+#ค้นหา ชื่อ full name
+def get_student_by_name(full_name, path):
+    conn = sqlite3.connect(path)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT student_id, full_name
+        FROM students
+        WHERE full_name = ?
+        LIMIT 1
+    """, (full_name,))
+    row = cursor.fetchone()
+    conn.close()
+
+    if row:
+        return {"student_id": row[0], "full_name": row[1]}
+    return None
+
+# หาการเข้าออกของนักเรียนตามวันที่
+def get_attendance_by_date(student_id, attendance_date, path):
+    conn = sqlite3.connect(path)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT attendance_id, student_id, attendance_date, checkin_time, checkout_time
+        FROM attendance
+        WHERE student_id = ? AND attendance_date = ?
+        LIMIT 1
+    """, (student_id, attendance_date))
+    row = cursor.fetchone()
+    conn.close()
+
+    if row:
+        return {
+            "attendance_id": row[0],
+            "student_id": row[1],
+            "attendance_date": row[2],
+            "checkin_time": row[3],
+            "checkout_time": row[4]
+        }
+    return None
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "student_attendance.db")
@@ -189,7 +228,7 @@ if __name__ == "__main__":
     '''
     
     #ข้อมูลนักเรียน
-    #add_student(66545202000,"ฟหกด เาสว",DB_PATH)
+    #add_student(66545202010,"build",DB_PATH)
     show_data_students(DB_PATH)
     '''
     ดูฐานข้อมูลนักเรียน
@@ -207,6 +246,7 @@ if __name__ == "__main__":
 
     
     #ข้อมูลการเข้าโรงเรียน
+    #add_attendance(66545202010, "2025-09-26", "08:00:00", None, DB_PATH)
     show_data_attendance(DB_PATH)
     
 

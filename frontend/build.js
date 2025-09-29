@@ -16,18 +16,175 @@ backpack.addEventListener("click", (e) => {
 });
 
 
+/*---------------- API URL-------------------------------- */
+const API_URL = "http://127.0.0.1:8000"; 
+
+
+
+
 // เปิดกล้องมาใช้
+/*------------------------------- CAMERA ----------------------------------- */
 const video = document.getElementById('camera');
+const logDisplay = document.getElementById("system-log-display");
+const toggleCamera = document.getElementById("toggle-camera");
 
-navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } })
-  .then(stream => {
+
+let stream = null; // เก็บ stream ไว้เผื่อปิดทีหลัง
+
+let countdown = 5;
+let countdownId = null;
+
+// ฟังก์ชันเพิ่ม log
+function addLog(type, message) {
+  const div = document.createElement("div");
+  div.classList.add(type); // system-log-info / system-log-suscess
+  div.innerHTML = `<b>system</b> <p>${message}</p>`;
+  logDisplay.prepend(div);
+}
+
+// เปิดกล้อง
+async function startCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { width: 640, height: 480 }
+    });
     video.srcObject = stream;
-  })
-  .catch(err => {
-    console.error("ไม่สามารถเปิดกล้อง:", err);
-  });
+    console.log("🎥 กล้องทำงานแล้ว");
+    
+    startCountdown();  // ✅ เริ่มนับเมื่อกล้องพร้อม
+  } catch (err) {
+    console.error("❌ ไม่สามารถเปิดกล้อง:", err);
+  }
+}
+// ฟังก์ชันปิดกล้อง
+function stopCamera() {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop()); 
+    video.srcObject = null;
+    stream = null;
+    console.log("🛑 ปิดกล้องแล้ว");
+  }
 
+  if (countdownId) {       // ✅ หยุดนับ
+    clearInterval(countdownId);
+    countdownId = null;
+  }
+}
 
+// ฟังการเปลี่ยน toggle
+toggleCamera.addEventListener("change", () => {
+  if (toggleCamera.checked) {
+    startCamera();
+  } else {
+    stopCamera();
+  }
+});
+// ฟังก์ชันเริ่มนับถอยหลัง
+function startCountdown() {
+  countdown = 5;
+  addLog("system-log-info", "เริ่มนับถอยหลัง...");
+  countdownId = setInterval(() => {
+    addLog("system-log-info", `(${countdown})`);
+    countdown--;
+
+    if (countdown < 0) {
+      clearInterval(countdownId);
+      countdownId = null;
+      captureAndSend(); // ยิง API หลังนับครบ
+    }
+  }, 1000);
+}
+
+// ✅ ดึง frame จาก <video> ส่งไป API
+async function captureAndSend() {
+  if (video.videoWidth === 0 || video.videoHeight === 0) {
+    console.warn("⏳ กล้องยังไม่พร้อม");
+    startCountdown(); // ถ้ายังไม่พร้อม → เริ่มนับใหม่
+    return;
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg"));
+  const formData = new FormData();
+  formData.append("file", blob, "frame.jpg");
+
+  try {
+    const res = await fetch(`${API_URL}/detect_face`, {
+      method: "POST",
+      body: formData
+    });
+    const data = await res.json();
+
+    if (data.found === false) {
+      addLog("system-log-info", "❌ ไม่พบใบหน้า");
+    } else {
+      addLog("system-log-suscess", `✅ เจอ ${data.name} (มั่นใจ ${data.confidence.toFixed(2)})`);
+
+      // 🟢 toggle sun/moon
+      const toggleDayNight = document.getElementById("toggle-day-night");
+      const isCheckIn = !toggleDayNight.checked; // ☀️ sun = check-in, 🌙 moon = check-out
+
+      // 🗓️ วันที่และเวลา
+      const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+      const now = new Date().toTimeString().split(" ")[0]; // HH:MM:SS
+
+      // 🔍 หานักเรียนจากชื่อ
+      const studentRes = await fetch(`${API_URL}/students/by-name?full_name=${encodeURIComponent(data.name)}`);
+      const student = await studentRes.json();
+
+      if (!student || !student.student_id) {
+        addLog("system-log-warnig", `⚠️ ไม่พบนักเรียนชื่อ ${data.name} ในระบบ`);
+        return;
+      }
+
+      // 🔎 เช็คการเข้าออกวันนี้
+      const attRes = await fetch(`${API_URL}/attendance/by-date?student_id=${student.student_id}&date=${today}`);
+      const att = await attRes.json();
+
+      if (!att || att.error) {
+        // 📌 ยังไม่มีข้อมูล → add ใหม่
+        if (isCheckIn) {
+          await fetch(`${API_URL}/attendance/add?student_id=${student.student_id}&attendance_date=${today}&checkin=${now}&checkout=`, { method: "POST" });
+          addLog("system-log-suscess", `🟢 เพิ่ม Check-in เวลา ${now}`);
+        } else {
+          await fetch(`${API_URL}/attendance/add?student_id=${student.student_id}&attendance_date=${today}&checkin=&checkout=${now}`, { method: "POST" });
+          addLog("system-log-suscess", `🔵 เพิ่ม Check-out เวลา ${now}`);
+        }
+      } else {
+        // 📌 มีแล้ว → update
+        if (isCheckIn) {
+          if (!att.checkin_time) {
+            await fetch(`${API_URL}/attendance/update?student_id=${student.student_id}&attendance_date=${today}&checkin=${now}&checkout=${att.checkout_time || ""}`, { method: "PUT" });
+            addLog("system-log-suscess", `🟢 อัปเดต Check-in เวลา ${now}`);
+          } else {
+            addLog("system-log-warnig", `⚠️ มีข้อมูล Check-in แล้ว (${att.checkin_time})`);
+          }
+        } else {
+          if (!att.checkout_time) {
+            await fetch(`${API_URL}/attendance/update?student_id=${student.student_id}&attendance_date=${today}&checkin=${att.checkin_time || ""}&checkout=${now}`, { method: "PUT" });
+            addLog("system-log-suscess", `🔵 อัปเดต Check-out เวลา ${now}`);
+          } else {
+            addLog("system-log-warnig", `⚠️ มีข้อมูล Check-out แล้ว (${att.checkout_time})`);
+          }
+        }
+      }
+
+      // โหลดใหม่ให้ตารางอัปเดต
+      loadAttendance();
+    }
+  } catch (err) {
+    console.error("API error:", err);
+    addLog("system-log-info", "⚠️ API error");
+  } finally {
+    startCountdown(); // ไม่ว่าจะเจอหรือไม่ → เริ่มนับใหม่
+  }
+}
+/*------------------------------- CAMERA ----------------------------------- */
 // ปุ่ม inventory
 const buttons = document.querySelectorAll(".inventory-btt a i");
 const page1 = document.querySelector(".inventory-page1");
@@ -183,9 +340,44 @@ function close_add_time() {
   document.getElementById("popup-add-time").style.display = "none";
 }
 
+// เพิ่มนักเรียน
+async function saveNewStudent() {
+  const studentId = document.getElementById("add-student-id").value;
+  const fullName = document.getElementById("add-student-name").value;
 
-/* API LOAD DATA*/
-const API_URL = "http://127.0.0.1:8000"; 
+  if (!studentId || !fullName) {
+    alert("กรอกข้อมูลให้ครบก่อนบันทึก");
+    return;
+  }
+
+  await fetch(`${API_URL}/students/add?student_id=${encodeURIComponent(studentId)}&full_name=${encodeURIComponent(fullName)}`, {
+    method: "POST"
+  });
+
+  loadStudents(); // โหลดตารางใหม่
+  close_add_std(); // ปิด popup
+}
+
+// เพิ่มการเข้า-ออก
+async function saveNewAttendance() {
+  const studentId = document.getElementById("add-student-id-time").value;
+  const attendanceDate = document.getElementById("add-attendance-date").value;
+  const checkin = document.getElementById("add-checkin").value;
+  const checkout = document.getElementById("add-checkout").value;
+
+  if (!studentId || !attendanceDate || !checkin) {
+    alert("กรอกข้อมูลให้ครบก่อนบันทึก");
+    return;
+  }
+
+  await fetch(`${API_URL}/attendance/add?student_id=${encodeURIComponent(studentId)}&attendance_date=${encodeURIComponent(attendanceDate)}&checkin=${encodeURIComponent(checkin)}&checkout=${encodeURIComponent(checkout)}`, {
+    method: "POST"
+  });
+
+  loadAttendance(); // โหลดตารางใหม่
+  close_add_time(); // ปิด popup
+}
+
 
 /* โหลด Student */
 async function loadStudents() {
@@ -265,3 +457,8 @@ window.onload = () => {
   loadStudents();    // โหลดตารางนักเรียน
   loadAttendance();  // โหลดตารางการเข้าออก
 };
+
+
+
+
+

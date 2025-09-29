@@ -152,58 +152,88 @@ a:hover{
   display: inline-block;
   width: 60px;
   height: 34px;
+  margin: 5px;
 }
 
-/* ซ่อนปุ่ม */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* กรอบตัว slide */
+/* แถบ slider */
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background-color: #cecdc8;
-  -webkit-transition: .4s;
   transition: .4s;
   border-radius: 1rem;
-  
 }
-/* สวิทด้านใน ก่อนที่จะกด*/
-.slider:before {
+
+/* วงกลม toggle */
+.circle {
   position: absolute;
-  content: "";
   height: 26px;
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: rgb(255, 255, 255);
-  -webkit-transition: .4s;
+  background-color: white;
+  border-radius: 50%;
   transition: .4s;
-  border-radius: 1rem;
-}
-/* กรอบตัว slide */
-
-/* event หลังจากโดนกดติ้ก */
-input:checked + .slider {
-  background-color: #2196F3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  overflow: hidden;
 }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+/* ซ่อน icon ไว้ก่อน */
+.circle .icon {
+  position: absolute;
+  transition: opacity 0.3s;
 }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
+/* ---------------- กล้อง ---------------- */
+#toggle-camera + .slider {
+  background-color: #999; /* ปิด */
+}
+#toggle-camera:checked + .slider {
+  background-color: #2ecc71; /* เขียวตอนเปิด */
+}
+#toggle-camera:checked + .slider .circle {
   transform: translateX(26px);
 }
+
+/* ---------------- พระอาทิตย์/พระจันทร์ ---------------- */
+/* ค่าเริ่มต้น → โชว์พระอาทิตย์ */
+.circle .sun {
+  color: orange;
+  opacity: 1;
+}
+.circle .moon {
+  color: blue;
+  opacity: 0;
+}
+
+/* เวลา checked → สลับโชว์พระจันทร์ */
+input:checked + .slider .circle {
+  transform: translateX(26px);
+}
+input:checked + .slider .circle .sun {
+  opacity: 0;
+}
+input:checked + .slider .circle .moon {
+  opacity: 1;
+}
+
+#toggle-day-night + .slider {
+  background-color: orange; /* ปิด = bg สีทอง */
+}
+#toggle-day-night:checked + .slider {
+  background-color: #1e3a8a; /* เปิด = น้ำเงินเข้ม */
+}
+
 
 
 /*                    */
@@ -455,18 +485,20 @@ input:checked + .slider:before {
   animation: popUp 0.3s ease;
 }
 
-#popup-edit-time .popup-content form{ 
+#popup-edit-time .popup-content form, #popup-add-time .popup-content form{ 
   display: flex;
   flex-direction: column;
 }
 
 
-#popup-edit-std .popup-content form {
+#popup-edit-std .popup-content form, #popup-add-std .popup-content form{
   display: flex;
   flex-direction: row;   /* โลโก้ซ้าย + input ขวา */
   align-items: flex-start; /* ให้ input ชิดบนกับโลโก้ */
   gap: 20px;             /* เว้นระยะห่าง */
 }
+
+
 
 .popup-user-img {
   display: flex;
@@ -483,10 +515,7 @@ input:checked + .slider:before {
   border: 2px solid #ff990000; /* เพิ่มเส้นขอบให้ดูเด่น */
 }
 
-#popup-add-std .popup-content form .popup-edit{ 
-  display: flex;
-  flex-direction: column;
-}
+
 
 .popup-edit-btt{
   display: flex;

@@ -32,12 +32,28 @@
     </div>
 
     <div class="item right">
+      <!-- สวิตช์กล้อง -->
       <label class="switch">
-        <input type="checkbox">
-        <span class="slider"></span>
+        <input type="checkbox" id="toggle-camera">
+        <span class="slider">
+          <span class="circle">
+            <span class="material-symbols-outlined">videocam</span>
+          </span>
+        </span>
       </label>
-    
+
+      <!-- สวิตช์พระอาทิตย์/พระจันทร์ -->
+      <label class="switch">
+        <input type="checkbox" id="toggle-day-night">
+        <span class="slider">
+          <span class="circle">
+            <span class="icon sun material-symbols-outlined">light_mode</span>
+            <span class="icon moon material-symbols-outlined">dark_mode</span>
+          </span>
+        </span>
+      </label>
     </div>
+    
   
 </div>
 
@@ -58,28 +74,17 @@
     </div>
     <div class="page1-body">
       <video id="camera" autoplay playsinline></video>
-      <div  class="system-log-display">
+      <div  id="system-log-display" class="system-log-display">
         <div class="system-log-suscess">
-          <b>system</b> <p>test1asdasdad</p>
-        </div>
-        <div class="system-log-info">
-          <b>system</b> <p>test1asdasdad</p>
+          <b>system</b> <p>3</p>
         </div>
         <div class="system-log-warnig">
-          <b>system</b> <p>test</p>
+          <b>system</b> <p>2</p>
         </div>
         <div class="system-log-info">
-          <b>system</b> <p>test1asdasdad</p>
+          <b>system</b> <p>1</p>
         </div>
-        <div class="system-log-warnig">
-          <b>system</b> <p>test</p>
-        </div>
-        <div class="system-log-info">
-          <b>system</b> <p>test1asdasdad</p>
-        </div>
-        <div class="system-log-warnig">
-          <b>system</b> <p>test</p>
-        </div>
+    
       </div>
     </div>
 
@@ -92,7 +97,9 @@
         <h4>Check in history</h4>
       </div>
         <div class="search-bar">
-          <input type="text" placeholder="Search.."><button><span class="material-symbols-outlined">search</span></button>
+          <input type="text" placeholder="Search..">
+          <button><span class="material-symbols-outlined">search</span></button>
+          <button onclick="open_add_time()"><span class="material-symbols-outlined">add</span></button>
         </div>
         
         <div class="build-table-overflow">
@@ -115,7 +122,9 @@
           <h4>Player</h4>
         </div>
         <div class="search-bar">
-          <input type="text" placeholder="Search.."><button><span class="material-symbols-outlined">search</span></button>
+          <input type="text" placeholder="Search..">
+          <button><span class="material-symbols-outlined">search</span></button>
+          <button onclick="open_add_std()"><span class="material-symbols-outlined">add</span></button>
         </div>
 
         <div  class="build-table-overflow">
@@ -175,10 +184,10 @@
     <h3>แก้ไขข้อมูล แก๊ง</h3>
     <form>
       <label>รหัสนักศึกษา:</label>
-      <input id="popup-student-id-time" type="text" value="66545202010"><br><br>
+      <input id="popup-student-id-time" type="text" value="66545202010"  readonly><br><br>
     
       <label>วันที่:</label>
-      <input id="popup-attendance-date"  type="text" value="88522"><br><br>
+      <input id="popup-attendance-date"  type="text" value="88522"  readonly><br><br>
 
       <label>เวลาเข้า:</label>
       <input id="popup-checkin"  type="text" value="8854"><br><br>
@@ -196,34 +205,50 @@
 <div id="popup-add-std" class="popup">
   <div class="popup-content">
     <span class="close" onclick="close_add_std()">&times;</span>
-    <h3>แก้ไขข้อมูล</h3>
-    <form >
-      <label>รหัสนักศึกษา:</label>
-      <input type="text" value="66545202010"><br><br>
-    
-      <label>ชื่อ-สกุล:</label>
-      <input type="text" value="ชุติพงศ์ ชูเลิศ"><br><br>
-    
-      <button type="button"  >บันทึก</button>
-      <button type="button" onclick="close_add_std()">Close</button>
+    <h3>เพิ่มเวลา เข้า-ออก</h3>
+    <form>
+        <div class="popup-user-img">
+            <img src="logoover.png" alt="">
+        </div>
+        <div class="popup-edit">
+            <label>รหัสนักศึกษา:</label>
+            <input type="text" id="add-student-id" value=""><br><br>
+
+            <label>ชื่อ-สกุล:</label>
+            <input type="text" id="add-student-name"  value=""><br><br>
+        </div>
+        
     </form>
-  </div>  
+    <div class="popup-edit-btt">
+      <button type="button" onclick="saveNewStudent()">บันทึก</button>
+      <button type="button" onclick="close_add_std()">Close</button>
+    </div>
+      
+  </div>
 </div>
 
 <!-- Popup foram add check in check out -->
 <div id="popup-add-time" class="popup">
   <div class="popup-content">
     <span class="close" onclick="close_add_time()">&times;</span>
-    <h3>แก้ไขข้อมูล</h3>
+    <h3>เพิ่มคนเข้า แก๊ง</h3>
     <form>
       <label>รหัสนักศึกษา:</label>
-      <input type="text" value="66545202010"><br><br>
+      <input id="add-student-id-time" type="text" value=""  ><br><br>
     
-      <label>ชื่อ-สกุล:</label>
-      <input type="text" value="ชุติพงศ์ ชูเลิศ"><br><br>
+      <label>วันที่:</label>
+      <input id="add-attendance-date"  type="text" value=""  ><br><br>
+
+      <label>เวลาเข้า:</label>
+      <input id="add-checkin"  type="text" value=""><br><br>
+
+      <label>เวลาออก:</label>
+      <input id="add-checkout"  type="text" value=" "><br><br>
     
-      <button type="submit">บันทึก</button>
+      <button type="button" onclick="saveNewAttendance()">บันทึก</button>
       <button type="button" onclick="close_add_time()">Close</button>
+    </form>
+  </div>
     </form>
   </div>
 </div>
