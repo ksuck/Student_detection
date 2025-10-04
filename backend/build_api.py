@@ -7,7 +7,7 @@ import tempfile
 
 import build_sql 
 
-
+#python -m uvicorn build_api:app --reload
 app = FastAPI()
 
 # ✅ เปิดให้เรียกได้ทุก origin (แก้ถ้าอยากจำกัด)
