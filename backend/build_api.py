@@ -8,15 +8,9 @@ import numpy as np
 import tempfile
 import os
 
-<<<<<<< HEAD
-import build_sql 
+from backend import build_sql 
 
 #python -m uvicorn build_api:app --reload
-=======
-from backend import build_sql
-
-#run python -m uvicorn backend.build_api:app --reload --host 0.0.0.0 --port 8000
->>>>>>> ca198b9b6b9c6f504c2a8c81669ff7ccd3602b48
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
