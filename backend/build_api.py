@@ -1,14 +1,25 @@
 from fastapi import FastAPI , UploadFile, File , Form
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 import cv2
 import numpy as np
 import tempfile
+import os
 
+<<<<<<< HEAD
 import build_sql 
 
 #python -m uvicorn build_api:app --reload
+=======
+from backend import build_sql
+
+#run python -m uvicorn backend.build_api:app --reload --host 0.0.0.0 --port 8000
+>>>>>>> ca198b9b6b9c6f504c2a8c81669ff7ccd3602b48
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 # ✅ เปิดให้เรียกได้ทุก origin (แก้ถ้าอยากจำกัด)
 app.add_middleware(
@@ -22,7 +33,7 @@ app.add_middleware(
 
 @app.get("/")
 def root():
-    return {"msg": "API Student Attendance Running ✅"}
+    return FileResponse(os.path.join("frontend", "index.html"))
 
 
 #----------------- load on web ---------------------#
@@ -76,9 +87,13 @@ def api_add_attendance(student_id: int, attendance_date: str, checkin: str, chec
 
 #----------------- MODEL -----------------#
 
+DIR = os.path.dirname(os.path.abspath(__file__))
+FACE_PATH = os.path.join(DIR, "face_model.yml")
+LABEL_PATH = os.path.join(DIR, "labels.npy")
+
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-recognizer.read("face_model.yml")
-label_map = np.load("labels.npy", allow_pickle=True).item()
+recognizer.read(FACE_PATH)
+label_map = np.load(LABEL_PATH, allow_pickle=True).item()
 
 # โหลด Haar Cascade สำหรับตรวจจับใบหน้า
 face_cascade = cv2.CascadeClassifier(

@@ -6,7 +6,6 @@
 	"service": "app",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
-	// Use this environment variable if you need to bind mount your local source code into a new container.
 	"remoteEnv": {
 		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
 	},
@@ -24,16 +23,11 @@
 			"moby": "true"
 		}
 	},
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "docker --version",
-	"postCreateCommand": "python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt",
+	// ตรงนี้แก้ไข: ติดตั้ง system deps ก่อนแล้วค่อยทำ venv + pip
+	"postCreateCommand": "sudo apt-get update && sudo apt-get install -y libgl1 libglib2.0-0 && python3 -m venv .venv && . .venv/bin/activate && pip install --no-cache-dir -r requirements.txt",
 
-	// Use 'postStartCommand' to run commands after the container starts.
 	"postStartCommand": "echo 'source /workspaces/${localWorkspaceFolderBasename}/.venv/bin/activate' >> ~/.bashrc",
 
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "vscode"
 }
